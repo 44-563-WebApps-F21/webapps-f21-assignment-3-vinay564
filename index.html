@@ -38,7 +38,7 @@
 
    <hr>
         <h4>Table creation</h4>
-        <table>
+        <table border="1">
             <tr>
               <th>Food/Drinks</th>
               <th>Location</th>
@@ -65,7 +65,42 @@
                 <td>$3.00</td>
             </tr>
         </table>
-
+        <hr>
+        <h4>Code Display</h4>
+        <blockquote>
+            In computer science, the Rabin–Karp algorithm or Karp–Rabin algorithm is a string-searching algorithm created by Richard M.
+             Karp and Michael O. Rabin (1987) that uses hashing to find an exact match of a pattern string in a text. 
+             It uses a rolling hash to quickly filter out positions of the text that cannot match the pattern,
+              and then checks for a match at the remaining positions.
+        </blockquote>
+        <a href="https://en.wikipedia.org/wiki/Rabin%E2%80%93Karp_algorithm"> Source code link</a>
+            <pre>
+                vector<int> rabin_karp(string const& s, string const& t) {
+                    const int p = 31; 
+                    const int m = 1e9 + 9;
+                    int S = s.size(), T = t.size();
+                
+                    vector<long long> p_pow(max(S, T)); 
+                    p_pow[0] = 1; 
+                    for (int i = 1; i < (int)p_pow.size(); i++) 
+                        p_pow[i] = (p_pow[i-1] * p) % m;
+                
+                    vector<long long> h(T + 1, 0); 
+                    for (int i = 0; i < T; i++)
+                        h[i+1] = (h[i] + (t[i] - 'a' + 1) * p_pow[i]) % m; 
+                    long long h_s = 0; 
+                    for (int i = 0; i < S; i++) 
+                        h_s = (h_s + (s[i] - 'a' + 1) * p_pow[i]) % m; 
+                
+                    vector<int> occurences;
+                    for (int i = 0; i + S - 1 < T; i++) { 
+                        long long cur_h = (h[i+S] + m - h[i]) % m; 
+                        if (cur_h == h_s * p_pow[i] % m)
+                            occurences.push_back(i);
+                    }
+                    return occurences;
+                }
+            </pre>
 
 
     </body>
